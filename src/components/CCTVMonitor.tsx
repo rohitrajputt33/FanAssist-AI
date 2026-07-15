@@ -3,11 +3,21 @@
 import React, { useState } from 'react';
 import { Camera, ScanEye, Loader2, Image as ImageIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { AnalysisResult } from '@/types';
 
+/** Props for the CCTVMonitor component. */
 interface CCTVMonitorProps {
-  onAnalysisComplete: (data: any) => void;
+  onAnalysisComplete: (data: AnalysisResult) => void;
 }
 
+/**
+ * CCTV Vision AI Monitor component.
+ * Simulates real-time crowd analysis using GenAI for crowd management
+ * and operational intelligence during FIFA World Cup 2026.
+ *
+ * @param {CCTVMonitorProps} props - Component properties.
+ * @returns {React.ReactElement} The CCTVMonitor component.
+ */
 export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,8 +41,8 @@ export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
 
       const data = await res.json();
       onAnalysisComplete(data);
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during analysis.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred during analysis.');
     } finally {
       setIsAnalyzing(false);
     }
@@ -42,7 +52,7 @@ export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
     <div className="flex flex-col h-full bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl relative">
       <div className="bg-slate-800 p-4 flex items-center justify-between border-b border-slate-700">
         <div className="flex items-center gap-2 text-white font-bold tracking-wider">
-          <Camera className="text-red-500" />
+          <Camera className="text-red-500" aria-hidden="true" />
           <span>CCTV FEED: GATE 4</span>
         </div>
         <div className="flex items-center gap-2">
@@ -57,7 +67,7 @@ export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
            {/* In a real hackathon, we would put a real image here. For now, a stylish placeholder */}
            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-luminosity"></div>
            
-           <ImageIcon size={48} className="text-slate-600 mb-2 relative z-10" />
+           <ImageIcon size={48} className="text-slate-600 mb-2 relative z-10" aria-hidden="true" />
            <p className="text-slate-500 font-mono text-sm relative z-10">Concourse 4_CAM_02.raw</p>
            
            {/* Scanning effect line */}
@@ -74,6 +84,7 @@ export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
           <button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
+            aria-label="Engage Vision-Language AI to analyze CCTV feed"
             className={`w-full py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all ${
               isAnalyzing 
                 ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
@@ -92,7 +103,7 @@ export default function CCTVMonitor({ onAnalysisComplete }: CCTVMonitorProps) {
           </button>
 
           {error && (
-            <p className="text-red-400 text-sm text-center bg-red-950/50 p-2 rounded-md border border-red-900">{error}</p>
+            <p role="alert" className="text-red-400 text-sm text-center bg-red-950/50 p-2 rounded-md border border-red-900">{error}</p>
           )}
 
           <p className="text-slate-500 text-xs text-center leading-relaxed">

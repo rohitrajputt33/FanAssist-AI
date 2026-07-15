@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Bot, Send, User } from 'lucide-react';
 
 interface ChatMessage {
@@ -8,6 +8,13 @@ interface ChatMessage {
   content: string;
 }
 
+/**
+ * Digital Twin Chat interface for querying stadium infrastructure.
+ * Enables natural language queries about real-time stadium operations,
+ * crowd management scenarios, and decision support during FIFA World Cup 2026.
+ *
+ * @returns {React.ReactElement} The DigitalTwinChat component.
+ */
 export default function DigitalTwinChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'assistant', content: 'Digital Twin Online. How can I assist with stadium operations?' }
@@ -22,7 +29,7 @@ export default function DigitalTwinChat() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     if (!input.trim()) return;
 
     const userMsg = input.trim();
@@ -39,12 +46,12 @@ export default function DigitalTwinChat() {
 
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
-    } catch (error) {
+    } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Error communicating with Digital Twin.' }]);
     } finally {
       setIsTyping(false);
     }
-  };
+  }, [input]);
 
   return (
     <div className="flex flex-col h-48 bg-slate-950 rounded-xl border border-slate-700 overflow-hidden">
@@ -79,11 +86,13 @@ export default function DigitalTwinChat() {
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Ask the Digital Twin... (e.g. 'What if it rains?')"
           className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+          aria-label="Type a question for the Digital Twin"
         />
         <button
           onClick={handleSend}
           disabled={!input.trim() || isTyping}
           className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-lg px-3 flex items-center justify-center transition-colors"
+          aria-label="Send message to Digital Twin"
         >
           <Send size={14} />
         </button>

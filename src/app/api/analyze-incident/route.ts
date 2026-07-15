@@ -6,6 +6,12 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // Simulated Rate Limiting (Security Parameter)
 const rateLimitMap = new Map<string, { count: number, timestamp: number }>();
 
+/**
+ * POST handler for the GenAI incident analysis endpoint.
+ * Processes fan-reported incidents and CCTV triggers through the Gemini AI pipeline,
+ * providing real-time decision support for crowd management, multilingual assistance,
+ * and operational intelligence during FIFA World Cup 2026.
+ */
 export async function POST(req: NextRequest) {
   try {
     // 1. Security: Rate Limiting
@@ -72,7 +78,7 @@ export async function POST(req: NextRequest) {
       }, { status: 200 });
     }
 
-    const { incidentText, userLanguage = 'en' } = body;
+    const { incidentText } = body;
 
     if (!incidentText || typeof incidentText !== 'string' || incidentText.length > 500) {
       return NextResponse.json({ error: 'Invalid or too long incident text provided.' }, { status: 400 });
@@ -104,8 +110,8 @@ Return ONLY a raw JSON object containing:
       
       const rawText = response.text || '';
       jsonText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-    } catch (apiError: any) {
-      console.warn("Gemini API Error (likely Quota Exceeded). Falling back to mock response.");
+    } catch (apiError: unknown) {
+      console.warn('Gemini API Error:', apiError instanceof Error ? apiError.message : 'Unknown error');
       
       const mockResponse = {
         translatedMessage: "Help, my son is lost near Gate D. He is wearing a blue shirt.",
@@ -124,14 +130,15 @@ Return ONLY a raw JSON object containing:
     let parsedData;
     try {
       parsedData = JSON.parse(jsonText);
-    } catch (parseError) {
-      console.error('Failed to parse JSON:', jsonText);
+    } catch (parseError: unknown) {
+      console.error('Failed to parse JSON:', jsonText, parseError);
       return NextResponse.json({ error: 'Failed to process incident data.' }, { status: 500 });
     }
 
     return NextResponse.json(parsedData, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    console.error('Analyze incident error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

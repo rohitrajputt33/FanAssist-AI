@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+/** Props for the StadiumMap component. */
 interface StadiumMapProps {
   activeLocation?: string;
 }
@@ -15,7 +16,14 @@ const sectors = [
   { id: 'field', label: 'Pitch', x: 50, y: 50 },
 ];
 
-export default function StadiumMap({ activeLocation }: StadiumMapProps) {
+/**
+ * Interactive stadium sector map for real-time navigation and crowd management.
+ * Highlights the active incident location to assist with spatial decision support.
+ *
+ * @param {StadiumMapProps} props - Component properties.
+ * @returns {React.ReactElement} The StadiumMap component.
+ */
+const StadiumMap: React.FC<StadiumMapProps> = React.memo(function StadiumMap({ activeLocation }) {
   // Simple heuristic to match string to sector
   const activeSector = sectors.find(s => 
     activeLocation?.toLowerCase().includes(s.label.toLowerCase()) || 
@@ -65,4 +73,6 @@ export default function StadiumMap({ activeLocation }: StadiumMapProps) {
       </div>
     </div>
   );
-}
+});
+
+export default StadiumMap;

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FanAssist AI",
-  description: "GenAI-powered spatial operations module for stadium emergencies.",
+  title: "FanAssist AI - FIFA World Cup 2026",
+  description: "GenAI-enabled solution enhancing stadium operations, crowd management, multilingual assistance, and real-time decision support for fans and venue staff during the FIFA World Cup 2026.",
 };
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Megaphone, X, Volume2 } from 'lucide-react';
 
@@ -11,7 +11,25 @@ interface PAAnnouncementModalProps {
   scriptEs: string;
 }
 
-export default function PAAnnouncementModal({ isOpen, onClose, scriptEn, scriptEs }: PAAnnouncementModalProps) {
+/**
+ * Public Address Announcement Modal.
+ * Displays auto-generated bilingual (English/Spanish) PA announcement scripts
+ * for multilingual assistance during stadium emergencies.
+ *
+ * @param {PAAnnouncementModalProps} props - Component properties.
+ * @returns {React.ReactElement | null} The PAAnnouncementModal component.
+ */
+const PAAnnouncementModal: React.FC<PAAnnouncementModalProps> = React.memo(function PAAnnouncementModal({ isOpen, onClose, scriptEn, scriptEs }) {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -51,7 +69,7 @@ export default function PAAnnouncementModal({ isOpen, onClose, scriptEn, scriptE
                 <Volume2 size={16} /> English Broadcast
               </div>
               <div className="bg-slate-800 border border-slate-700 p-4 rounded-xl text-white font-medium leading-relaxed">
-                "{scriptEn}"
+                &quot;{scriptEn}&quot;
               </div>
             </div>
 
@@ -60,7 +78,7 @@ export default function PAAnnouncementModal({ isOpen, onClose, scriptEn, scriptE
                 <Volume2 size={16} /> Spanish Broadcast
               </div>
               <div className="bg-slate-800 border border-slate-700 p-4 rounded-xl text-white font-medium leading-relaxed">
-                "{scriptEs}"
+                &quot;{scriptEs}&quot;
               </div>
             </div>
             
@@ -75,4 +93,6 @@ export default function PAAnnouncementModal({ isOpen, onClose, scriptEn, scriptE
       </motion.div>
     </AnimatePresence>
   );
-}
+});
+
+export default PAAnnouncementModal;

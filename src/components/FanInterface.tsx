@@ -1,18 +1,30 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Send, Mic, Globe, TriangleAlert, Activity, Eye, ShieldAlert, Ear, RefreshCw, Scan, ArrowUpCircle, BrainCircuit } from 'lucide-react';
+import { Send, Mic, Globe, TriangleAlert, Activity, Eye, ShieldAlert, Ear, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { AnalysisResult } from '@/types';
+
+/** Props for the FanInterface component. */
 interface FanInterfaceProps {
-  onIncidentReported: (data: any) => void;
+  onIncidentReported: (data: AnalysisResult) => void;
 }
 
+/**
+ * Fan SOS Mobile Interface.
+ * Enables fans to report incidents via text, voice, or quick action buttons.
+ * Supports multilingual assistance and accessibility features including
+ * AR wayfinding for sensory relief during FIFA World Cup 2026.
+ *
+ * @param {FanInterfaceProps} props - Component properties.
+ * @returns {React.ReactElement} The FanInterface component.
+ */
 export default function FanInterface({ onIncidentReported }: FanInterfaceProps) {
   const [incidentText, setIncidentText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [language, setLanguage] = useState('en');
+  const [language] = useState('en');
   const [isARActive, setIsARActive] = useState(false);
 
   const triggerMosesProtocol = () => {
@@ -69,8 +81,8 @@ export default function FanInterface({ onIncidentReported }: FanInterfaceProps) 
       const data = await res.json();
       onIncidentReported(data);
       setIncidentText('');
-    } catch (err: any) {
-      setError(err.message || 'An error occurred.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred.');
     } finally {
       setIsSubmitting(false);
     }

@@ -1,11 +1,21 @@
 "use client";
 
 import React, { useState, useCallback } from 'react';
-import FanInterface from '@/components/FanInterface';
-import CCTVMonitor from '@/components/CCTVMonitor';
+import dynamic from 'next/dynamic';
 import SecurityDashboard, { Incident } from '@/components/SecurityDashboard';
+import { AnalysisResult } from '@/types';
 import { ShieldCheck, LayoutDashboard, Camera, Smartphone, BellRing } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+/** Dynamically imported FanInterface for code-splitting (non-default tab). */
+const FanInterface = dynamic(() => import('@/components/FanInterface'), {
+  loading: () => <div className="h-full flex items-center justify-center text-slate-400 font-mono">Loading Fan Interface...</div>
+});
+
+/** Dynamically imported CCTVMonitor for code-splitting (non-default tab). */
+const CCTVMonitor = dynamic(() => import('@/components/CCTVMonitor'), {
+  loading: () => <div className="h-full flex items-center justify-center text-slate-400 font-mono">Loading CCTV Monitor...</div>
+});
 
 type Tab = 'command-center' | 'cctv' | 'fan-mobile';
 
@@ -14,9 +24,9 @@ export default function Home() {
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [showToast, setShowToast] = useState(false);
 
-  const handleAnalysisComplete = useCallback((data: any) => {
+  const handleAnalysisComplete = useCallback((data: AnalysisResult) => {
     const newIncident: Incident = {
-      id: Math.random().toString(36).substring(7),
+      id: crypto.randomUUID(),
       crisisType: data.crisisType || 'Emergency',
       location: data.location || 'Unknown',
       identifiers: data.identifiers || 'None',
@@ -48,7 +58,7 @@ export default function Home() {
       <aside className="w-20 lg:w-64 bg-white/5 backdrop-blur-3xl border-r border-white/10 flex flex-col items-center lg:items-start transition-all z-20 shadow-[0_0_30px_rgba(0,0,0,0.5)] relative">
         <div className="h-20 w-full border-b border-white/10 flex items-center justify-center lg:justify-start lg:px-6">
           <div className="bg-aurora-indigo/20 p-2 rounded-lg shrink-0 border border-aurora-indigo/30 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-            <ShieldCheck className="text-aurora-cyan" size={24} />
+            <ShieldCheck className="text-aurora-cyan" size={24} aria-hidden="true" />
           </div>
           <span className="hidden lg:block ml-3 font-bold text-lg tracking-tight text-white truncate">AURA <span className="text-aurora-indigo font-normal">OS</span></span>
         </div>
@@ -57,8 +67,9 @@ export default function Home() {
           <button 
             onClick={() => setActiveTab('command-center')}
             className={`w-full flex items-center gap-3 px-3 py-4 rounded-xl transition-all duration-300 ${activeTab === 'command-center' ? 'bg-aurora-indigo/20 text-white font-bold shadow-[inset_0_0_0_1px_rgba(99,102,241,0.4)]' : 'hover:bg-white/5 text-slate-400 hover:text-white font-medium'}`}
+            aria-label="Command Center"
           >
-            <LayoutDashboard size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" />
+            <LayoutDashboard size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" aria-hidden="true" />
             <span className="hidden lg:block text-sm tracking-wide uppercase">Command Center</span>
           </button>
           
@@ -67,16 +78,18 @@ export default function Home() {
           <button 
             onClick={() => setActiveTab('cctv')}
             className={`w-full flex items-center gap-3 px-3 py-4 rounded-xl transition-all duration-300 ${activeTab === 'cctv' ? 'bg-aurora-indigo/20 text-white font-bold shadow-[inset_0_0_0_1px_rgba(99,102,241,0.4)]' : 'hover:bg-white/5 text-slate-400 hover:text-white font-medium'}`}
+            aria-label="Vision AI CCTV"
           >
-            <Camera size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" />
+            <Camera size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" aria-hidden="true" />
             <span className="hidden lg:block text-sm tracking-wide uppercase">Vision AI (CCTV)</span>
           </button>
           
           <button 
             onClick={() => setActiveTab('fan-mobile')}
             className={`w-full flex items-center gap-3 px-3 py-4 rounded-xl transition-all duration-300 ${activeTab === 'fan-mobile' ? 'bg-aurora-indigo/20 text-white font-bold shadow-[inset_0_0_0_1px_rgba(99,102,241,0.4)]' : 'hover:bg-white/5 text-slate-400 hover:text-white font-medium'}`}
+            aria-label="Fan SOS Mobile"
           >
-            <Smartphone size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" />
+            <Smartphone size={20} className="shrink-0 mx-auto lg:mx-0 text-aurora-cyan" aria-hidden="true" />
             <span className="hidden lg:block text-sm tracking-wide uppercase">Fan SOS (Mobile)</span>
           </button>
         </nav>
@@ -158,7 +171,7 @@ export default function Home() {
               className="absolute bottom-8 right-8 bg-slate-900/90 backdrop-blur-xl text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_rgba(99,102,241,0.3)] flex items-center gap-4 border border-aurora-indigo/50 z-50"
             >
               <div className="bg-aurora-indigo/20 p-2 rounded-full">
-                <BellRing className="text-aurora-cyan animate-bounce" size={20} />
+                <BellRing className="text-aurora-cyan animate-bounce" size={20} aria-hidden="true" />
               </div>
               <div>
                 <p className="font-bold text-sm tracking-wide text-aurora-cyan uppercase">New Incident Detected</p>
