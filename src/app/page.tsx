@@ -35,7 +35,7 @@ export default function Home() {
               <ShieldCheck className="text-white" size={24} aria-hidden="true" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-white">
-              Aura <span className="text-slate-400 font-normal">Guardian Module</span>
+              FanAssist <span className="text-slate-400 font-normal">AI Operations</span>
             </h1>
           </div>
           <div className="text-sm font-medium text-slate-400 hidden sm:block">

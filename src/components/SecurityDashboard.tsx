@@ -24,7 +24,7 @@ export default function SecurityDashboard({ incidents, onClear }: SecurityDashbo
       <div className="bg-slate-800 p-5 flex justify-between items-center border-b border-slate-700">
         <h2 className="text-white text-xl font-bold flex items-center gap-2">
           <ShieldAlert className="text-blue-500" aria-hidden="true" />
-          <span>Aura Command Center</span>
+          <span>FanAssist AI Command Center</span>
         </h2>
         <div className="flex items-center gap-2">
           <span className="relative flex h-3 w-3">

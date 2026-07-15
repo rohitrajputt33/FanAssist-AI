@@ -48,7 +48,7 @@ export default function FanInterface({ onIncidentReported }: FanInterfaceProps) 
       <div className="bg-gradient-to-r from-red-600 to-rose-500 p-4">
         <h2 className="text-white text-xl font-bold flex items-center gap-2">
           <AlertTriangle aria-hidden="true" />
-          <span>Aura SOS / Help</span>
+          <span>FanAssist AI SOS / Help</span>
         </h2>
         <p className="text-rose-100 text-sm mt-1">Describe your emergency in any language.</p>
       </div>

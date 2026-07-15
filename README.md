@@ -1,15 +1,15 @@
-# Aura - The Guardian Module 🏟️
+# FanAssist AI 🏟️
 
 **PromptWars Virtual Hackathon Submission | Challenge 4: Smart Stadiums & Tournament Operations**
 
-Aura is a GenAI-powered spatial operations module designed to enhance the FIFA World Cup 2026 experience by autonomously managing stadium emergencies, crowd flow, and multilingual fan assistance in real-time.
+FanAssist AI is a GenAI-powered spatial operations module designed to enhance the FIFA World Cup 2026 experience by autonomously managing stadium emergencies, crowd flow, and multilingual fan assistance in real-time.
 
 ## 🏆 Problem Statement Alignment
 
 Managing 80,000 emotional, multilingual fans during a World Cup is incredibly complex. Traditional stadium operations are reactive and rely on chaotic walkie-talkie communication. 
 
-**Aura solves this by bridging the gap between fan emergencies and operational response using Generative AI.**
-When a fan submits an SOS in *any language*, Aura uses the Gemini LLM to instantly translate the message, extract critical spatial entities (Location, Crisis Type, Identifiers), and populate a real-time Security Dashboard for stewards. Simultaneously, it generates a sympathetic, native-language response to calm the fan.
+**FanAssist AI solves this by bridging the gap between fan emergencies and operational response using Generative AI.**
+When a fan submits an SOS in *any language*, FanAssist AI uses the Gemini LLM to instantly translate the message, extract critical spatial entities (Location, Crisis Type, Identifiers), and populate a real-time Security Dashboard for stewards. Simultaneously, it generates a sympathetic, native-language response to calm the fan.
 
 ## 💯 AI Evaluation Criteria Checklist
 
