@@ -28,6 +28,50 @@ export async function POST(req: NextRequest) {
 
     // 2. Input Validation
     const body = await req.json();
+
+    if (body.trigger === 'CCTV_ANALYSIS') {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return NextResponse.json({
+        translatedMessage: "Gate 4 is bottlenecking because fans are stopping to take photos with a World Cup mascot. This is causing a dangerous buildup on the stairs behind them. The crowd is predominantly wearing Argentina jerseys.",
+        location: "Gate 4",
+        crisisType: "Crowd Bottleneck",
+        identifiers: "Mascot, Argentina jerseys, Stairs",
+        severity: "High",
+        dispatchUnit: "Steward Unit 7",
+        dispatchInstruction: "Please move to Gate 4 stairs. Politely direct fans taking photos to move outside to the plaza to clear the staircase.",
+        announcementScriptEn: "Gate 4 is delayed. Please use Gate 5 (to your right) for a 10-minute faster exit to the Metro. Mascot photos are available outside Gate 5.",
+        announcementScriptEs: "La Puerta 4 está retrasada. Por favor, use la Puerta 5 (a su derecha) para una salida 10 minutos más rápida hacia el Metro. Las fotos con la mascota están disponibles fuera de la Puerta 5."
+      }, { status: 200 });
+    }
+
+    if (body.trigger === 'MOSES') {
+      return NextResponse.json({
+        translatedMessage: "[Automated Wearable SOS] Extreme heart rate drop detected. Potential cardiac event.",
+        location: "Concourse B, Sector 4",
+        crisisType: "Cardiac Arrest (Moses Protocol)",
+        identifiers: "Apple Watch Vital Alert",
+        severity: "CRITICAL",
+        dispatchUnit: "Paramedic Unit 2",
+        dispatchInstruction: "CODE RED. Immediate cardiac response required. Moses Protocol engaged to clear physical path via digital signage.",
+        announcementScriptEn: "MEDICAL EMERGENCY. CLEAR THE CENTER AISLE IMMEDIATELY. MAKE WAY FOR MEDICS.",
+        announcementScriptEs: "EMERGENCIA MÉDICA. DESPEJE EL PASILLO CENTRAL INMEDIATAMENTE. DEJE PASO A LOS MÉDICOS."
+      }, { status: 200 });
+    }
+
+    if (body.trigger === 'SENSORY') {
+      return NextResponse.json({
+        translatedMessage: "Sensory relief requested. AR Wayfinding activated on fan device.",
+        location: "Gate A (High Noise Zone)",
+        crisisType: "Sensory Overload",
+        identifiers: "AR Wayfinding Active",
+        severity: "Low",
+        dispatchUnit: "Guest Services",
+        dispatchInstruction: "VIP Room 4 unlocked. Fan is currently being routed via AR Wayfinding. Please have water ready.",
+        announcementScriptEn: "",
+        announcementScriptEs: ""
+      }, { status: 200 });
+    }
+
     const { incidentText, userLanguage = 'en' } = body;
 
     if (!incidentText || typeof incidentText !== 'string' || incidentText.length > 500) {

@@ -7,7 +7,7 @@ describe('FanInterface', () => {
     const mockOnReported = jest.fn();
     render(<FanInterface onIncidentReported={mockOnReported} />);
     
-    expect(screen.getByLabelText(/what is happening\?/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /send emergency alert/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/I lost my son/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /medical emergency/i })).toBeInTheDocument();
   });
 });
